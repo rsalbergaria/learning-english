@@ -1,33 +1,36 @@
-import { Link } from "react-router-dom";
-import wordsJson from "./data/words.json";
-import wordsTxtRaw from "./data/words.example.txt?raw";
-import { parseJsonDeck, parseTxtDeck } from "./utils/parseDeck.js";
+import { Link, useParams } from "react-router-dom";
+import { getDeckById } from "./decks.js";
 import { useFlashcardDeck } from "./hooks/useFlashcardDeck.js";
 import Flashcard from "./components/Flashcard.jsx";
 import "./flashcards.css";
 
-// Troque para "txt" para usar src/features/flashcards/data/words.example.txt
-// como fonte em vez do JSON. Os dois formatos estão documentados nos
-// próprios arquivos de dados.
-const DATA_SOURCE = "json";
+export default function DeckPage() {
+  const { deckId } = useParams();
+  const deck = getDeckById(deckId);
 
-const deck =
-  DATA_SOURCE === "txt"
-    ? parseTxtDeck(wordsTxtRaw, "Vocabulário Geral")
-    : parseJsonDeck(wordsJson);
+  if (!deck) {
+    return (
+      <>
+        <h1 className="page-title">Deck não encontrado</h1>
+        <p className="page-subtitle">
+          <Link to="..">← Voltar para os decks</Link>
+        </p>
+      </>
+    );
+  }
 
-export default function FlashcardsPage() {
+  return <DeckStudySession deck={deck} />;
+}
+
+function DeckStudySession({ deck }) {
   const { current, position, total, flipped, goNext, goPrev, toggleFlip, shuffle } =
     useFlashcardDeck(deck.cards);
 
   if (total === 0) {
     return (
       <>
-        <h1 className="page-title">{deck.deckName}</h1>
-        <p className="empty-state">
-          Nenhuma carta encontrada. Adicione palavras em{" "}
-          <code>src/features/flashcards/data/words.json</code>.
-        </p>
+        <h1 className="page-title">{deck.name}</h1>
+        <p className="empty-state">Este deck não tem cartas ainda.</p>
       </>
     );
   }
@@ -37,14 +40,14 @@ export default function FlashcardsPage() {
       <div className="flashcards-toolbar">
         <div>
           <h1 className="page-title" style={{ marginBottom: "0.2rem" }}>
-            {deck.deckName}
+            {deck.name}
           </h1>
           <span className="flashcards-progress">
             Carta {position + 1} de {total}
           </span>
         </div>
-        <Link to="/" className="btn">
-          ← Voltar
+        <Link to=".." className="btn">
+          ← Decks
         </Link>
       </div>
 

@@ -1,5 +1,6 @@
 {
-  "deckName": "Vocabulário Geral",
+  "name": "Vocabulário Geral",
+  "description": "Palavras e expressões do dia a dia.",
   "cards": [
     {
       "front": "ubiquitous",

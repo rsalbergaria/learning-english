@@ -2,7 +2,7 @@
 
 Site estático, modular e sem login para estudar inglês, feito em **React + Vite**, hospedado no **GitHub Pages**.
 
-A primeira feature (módulo) é **Flashcards**: um deck de cartas com palavra em inglês na frente e tradução/exemplo no verso.
+A primeira feature (módulo) é **Flashcards**: vários decks de cartas, cada um com palavra em inglês na frente e tradução/exemplo no verso.
 
 ## Rodando localmente
 
@@ -22,13 +22,17 @@ src/
   components/                 # componentes compartilhados (Layout/header/footer)
   styles/global.css           # tema visual compartilhado
   features/
-    flashcards/                # uma feature = uma pasta
-      FlashcardsPage.jsx        # página da feature
-      components/Flashcard.jsx  # componente do cartão (flip)
-      hooks/useFlashcardDeck.js # lógica de navegação/estado do deck
-      data/words.json           # as palavras (fonte padrão)
-      data/words.example.txt    # formato alternativo em .txt
-      utils/parseDeck.js        # parsers para os dois formatos
+    flashcards/                  # uma feature = uma pasta
+      FlashcardsFeature.jsx       # dono das sub-rotas da feature (lista de decks + estudo)
+      FlashcardsHome.jsx          # tela de seleção de deck
+      DeckPage.jsx                # tela de estudo (flip/anterior/próximo/embaralhar)
+      decks.js                    # descobre automaticamente os arquivos em data/
+      components/Flashcard.jsx    # componente do cartão (flip)
+      hooks/useFlashcardDeck.js   # lógica de navegação/estado do deck
+      data/general.json           # um deck
+      data/phrasal-verbs.json     # outro deck
+      data/idioms.txt             # outro deck, em formato .txt
+      utils/parseDeck.js          # parsers dos dois formatos (json e txt)
 ```
 
 ### Como adicionar uma nova feature/módulo
@@ -54,24 +58,45 @@ src/
    ```
 4. Pronto — ela aparece automaticamente na home e a rota já funciona. Nenhum outro arquivo precisa mudar.
 
-## Editando os flashcards
+## Decks de flashcards
 
-Edite `src/features/flashcards/data/words.json`:
+Cada arquivo dentro de `src/features/flashcards/data/` é um deck independente e aparece **automaticamente** na tela de seleção — não precisa registrar em nenhum outro lugar.
+
+### Criando um deck em JSON
+
+Crie `src/features/flashcards/data/<algum-nome>.json`:
 
 ```json
 {
-  "deckName": "Vocabulário Geral",
+  "name": "Vocabulário Geral",
+  "description": "Palavras e expressões do dia a dia.",
   "cards": [
     { "front": "ubiquitous", "back": "onipresente", "example": "Smartphones are ubiquitous in modern life." }
   ]
 }
 ```
 
-- `front`: palavra/expressão em inglês
-- `back`: tradução
-- `example` (opcional): frase de exemplo
+- `name`: nome do deck mostrado na lista
+- `description` (opcional): subtítulo do card na lista
+- `cards[].front`: palavra/expressão em inglês
+- `cards[].back`: tradução
+- `cards[].example` (opcional): frase de exemplo
 
-**Alternativa em `.txt`**: se preferir editar sem se preocupar com sintaxe JSON, use `src/features/flashcards/data/words.example.txt`, uma carta por linha no formato `frente;verso;exemplo`. Para ativar, troque `DATA_SOURCE` para `"txt"` no topo de `src/features/flashcards/FlashcardsPage.jsx`.
+### Criando um deck em TXT
+
+Se preferir editar sem se preocupar com sintaxe JSON, crie `src/features/flashcards/data/<algum-nome>.txt`, uma carta por linha no formato `frente;verso;exemplo` (exemplo é opcional). As duas primeiras linhas podem definir nome/descrição do deck:
+
+```
+# name: Idioms
+# description: Expressões idiomáticas comuns em inglês.
+
+break the ice;quebrar o gelo;He told a joke to break the ice.
+piece of cake;muito fácil / moleza;The test was a piece of cake.
+```
+
+Sem essas linhas, o nome do deck vira o nome do arquivo (ex: `phrasal-verbs.txt` → "Phrasal Verbs").
+
+Veja `data/general.json`, `data/phrasal-verbs.json` e `data/idioms.txt` como exemplos prontos.
 
 ## Deploy no GitHub Pages
 

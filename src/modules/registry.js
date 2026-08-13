@@ -9,16 +9,16 @@
 
 import { lazy } from "react";
 
-const FlashcardsPage = lazy(() => import("../features/flashcards/FlashcardsPage.jsx"));
+const FlashcardsFeature = lazy(() => import("../features/flashcards/FlashcardsFeature.jsx"));
 
 export const modules = [
   {
     id: "flashcards",
     name: "Flashcards",
-    description: "Estude palavras em inglês com cartões de memorização.",
+    description: "Estude palavras em inglês com vários decks de cartões de memorização.",
     icon: "🗂️",
     path: "/flashcards",
-    element: FlashcardsPage,
+    element: FlashcardsFeature,
     enabled: true,
   },
 ];

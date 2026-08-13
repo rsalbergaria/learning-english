@@ -1,3 +1,11 @@
+.deck-count {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
 .flashcards-page {
   display: flex;
   flex-direction: column;

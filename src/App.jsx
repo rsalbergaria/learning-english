@@ -18,7 +18,7 @@ export default function App() {
             {modules
               .filter((mod) => mod.enabled)
               .map((mod) => (
-                <Route key={mod.id} path={mod.path} element={<mod.element />} />
+                <Route key={mod.id} path={`${mod.path}/*`} element={<mod.element />} />
               ))}
             <Route path="*" element={<NotFound />} />
           </Routes>
