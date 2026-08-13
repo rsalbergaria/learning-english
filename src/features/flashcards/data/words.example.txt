@@ -1,0 +1,8 @@
+# Formato alternativo (txt), caso prefira editar sem se preocupar com sintaxe de JSON.
+# Uma carta por linha: frente;verso;frase de exemplo (a frase é opcional).
+# Linhas em branco ou começando com # são ignoradas.
+
+ubiquitous;onipresente;Smartphones are ubiquitous in modern life.
+to overwhelm;sobrecarregar / dominar;The amount of work overwhelmed her.
+reluctant;relutante;He was reluctant to accept the offer.
+to figure out;descobrir / entender;I need to figure out how this works.
